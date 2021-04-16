@@ -39,10 +39,9 @@ function initNav() {
 		)}</a>`;
 		// add the listitem to the menu
 		menu.appendChild(li);
-
+		li.classList.add(`${section.getAttribute('id')}`);
 		// Scroll to anchor ID using scrollTO event
 		li.addEventListener('click', function(event) {
-			console.log('infucntion');
 			event.preventDefault();
 			const targetId = event.currentTarget.querySelector('a').getAttribute('href');
 			let top = document.querySelector(targetId).offsetTop - 100;
@@ -54,58 +53,33 @@ function initNav() {
 	}
 }
 
-// adding a click event listenr to all links inside the navbar
-function smoothScrolling() {
-	const links = document.querySelectorAll('.navbar__menu ul a');
+//funtionality to check active class
+function activeChecker() {
+	const sectionList = document.querySelectorAll('section');
+	// console.log(sectionList);
+	sectionList.forEach((section) => {
+		//removing non active classes
+		section.classList.remove('your-active-class');
 
-	for (const link of links) {
-		link.addEventListener('click', clickHandler);
-	}
-}
-
-// handling the click event by adding a smooth behavior to the scroll
-function clickHandler(e) {
-	e.preventDefault();
-	const href = this.getAttribute('href');
-	const offsetTop = document.querySelector(href).offsetTop;
-
-	scroll({
-		top: offsetTop,
-		behavior: 'smooth'
-	});
-}
-
-function isElementVisible(el) {
-	var rect = el.getBoundingClientRect(),
-		vWidth = window.innerWidth || document.documentElement.clientWidth,
-		vHeight = window.innerHeight || document.documentElement.clientHeight,
-		efp = function(x, y) {
-			return document.elementFromPoint(x, y);
-		};
-
-	// Return false if it's not in the viewport
-	if (rect.right < 0 || rect.bottom < 0 || rect.left > vWidth || rect.top > vHeight) return false;
-
-	// Return true if any of its four corners are visible
-	return (
-		el.contains(efp(rect.left, rect.top)) ||
-		el.contains(efp(rect.right, rect.top)) ||
-		el.contains(efp(rect.right, rect.bottom)) ||
-		el.contains(efp(rect.left, rect.bottom))
-	);
-}
-// make the element in viewport an active class
-function toggleActive() {
-	for (section of sections) {
-		if (isElementVisible(section)) {
-			if (section.classList.contains('your-active-class')) continue;
-			else section.classList.add('your-active-class');
+		//getting distance from the top.
+		let topDistance = Math.floor(section.getBoundingClientRect().top);
+		// console.log(section.getBoundingClientRect());
+		//checking if the section is in viewport
+		if (topDistance < 150 && topDistance >= -150) {
+			section.classList.add('your-active-class');
+			li = document.querySelector(`.${section.getAttribute('id')}`);
+			li.classList.add('menu__link__active');
 		} else {
 			section.classList.remove('your-active-class');
+			li = document.querySelector(`.${section.getAttribute('id')}`);
+			li.classList.remove('menu__link__active');
 		}
-	}
+	});
 }
-
+// functionality for making sections active when in viewport
+window.addEventListener('scroll', () => {
+	activeChecker();
+});
 /**
  * End Helper Functions
  * Begin Main Functions
@@ -114,41 +88,3 @@ function toggleActive() {
 
 // build the nav
 initNav();
-// Add class 'active' to section when near top of viewport
-document.addEventListener('scroll', toggleActive);
-// Scroll to anchor ID using scrollTO event
-smoothScrolling();
-/**
- * End Main Functions
- * Begin Events
- * 
-*/
-
-// Build menu
-
-// Scroll to section on link click
-
-// Set sections as active
-function ToggleListItemsActive() {
-	// Get the container element
-	var liContainer = document.getElementById('navbar__list');
-	console.log(liContainer);
-	// // Get all buttons with class="btn" inside the container
-	// var btns = btnContainer.getElementsByClassName("btn");
-
-	// // Loop through the buttons and add the active class to the current/clicked button
-	// for (var i = 0; i < btns.length; i++) {
-	//   btns[i].addEventListener("click", function() {
-	//     var current = document.getElementsByClassName("active");
-
-	//     // If there's no active class
-	//     if (current.length > 0) {
-	//       current[0].className = current[0].className.replace(" active", "");
-	//     }
-
-	//     // Add the active class to the current/clicked button
-	//     this.className += " active";
-	//   });
-	// }
-}
-ToggleListItemsActive();
