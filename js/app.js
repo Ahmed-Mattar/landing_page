@@ -39,6 +39,18 @@ function initNav() {
 		)}</a>`;
 		// add the listitem to the menu
 		menu.appendChild(li);
+
+		// Scroll to anchor ID using scrollTO event
+		li.addEventListener('click', function(event) {
+			console.log('infucntion');
+			event.preventDefault();
+			const targetId = event.currentTarget.querySelector('a').getAttribute('href');
+			let top = document.querySelector(targetId).offsetTop - 100;
+			window.scrollTo({
+				top: top,
+				behavior: 'smooth'
+			});
+		});
 	}
 }
 
@@ -62,12 +74,6 @@ function clickHandler(e) {
 		behavior: 'smooth'
 	});
 }
-
-// check if element in viewport
-// function elInViewPort(el) {
-// 	let elPosition = el.getBoundingClientRect();
-// 	return elPosition.top >= 0;
-// }
 
 function isElementVisible(el) {
 	var rect = el.getBoundingClientRect(),
@@ -123,3 +129,26 @@ smoothScrolling();
 // Scroll to section on link click
 
 // Set sections as active
+function ToggleListItemsActive() {
+	// Get the container element
+	var liContainer = document.getElementById('navbar__list');
+	console.log(liContainer);
+	// // Get all buttons with class="btn" inside the container
+	// var btns = btnContainer.getElementsByClassName("btn");
+
+	// // Loop through the buttons and add the active class to the current/clicked button
+	// for (var i = 0; i < btns.length; i++) {
+	//   btns[i].addEventListener("click", function() {
+	//     var current = document.getElementsByClassName("active");
+
+	//     // If there's no active class
+	//     if (current.length > 0) {
+	//       current[0].className = current[0].className.replace(" active", "");
+	//     }
+
+	//     // Add the active class to the current/clicked button
+	//     this.className += " active";
+	//   });
+	// }
+}
+ToggleListItemsActive();
